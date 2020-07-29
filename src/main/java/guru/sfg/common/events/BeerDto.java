@@ -1,6 +1,7 @@
-package guru.springframework.msscbeerservice.web.model;
+package guru.sfg.common.events;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import guru.springframework.msscbeerservice.web.model.BeerStyleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -2,10 +2,10 @@ package guru.springframework.msscbeerservice.services.brewing;
 
 import guru.springframework.msscbeerservice.config.JmsConfig;
 import guru.springframework.msscbeerservice.domain.Beer;
-import guru.springframework.msscbeerservice.events.BrewBeerEvent;
-import guru.springframework.msscbeerservice.events.NewInventoryEvent;
+import guru.sfg.common.events.BrewBeerEvent;
+import guru.sfg.common.events.NewInventoryEvent;
 import guru.springframework.msscbeerservice.repositories.BeerRepository;
-import guru.springframework.msscbeerservice.web.model.BeerDto;
+import guru.sfg.common.events.BeerDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
@@ -26,7 +26,9 @@ public class BrewBeerListener {
         BeerDto beerDto = event.getBeer();
         Beer beer = beerRepository.getOne(beerDto.getId());
         beerDto.setQuantityOnHand(beer.getQuantityToBrew());
-        log.debug("Qauantity to brew is {}", beerDto.getQuantityOnHand());
-        jmsTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, new NewInventoryEvent(beerDto));
+        log.debug("Quantity to brew is {}", beerDto.getQuantityOnHand());
+
+        NewInventoryEvent message = new NewInventoryEvent(beerDto);
+        jmsTemplate.convertAndSend(JmsConfig.NEW_INVENTORY_QUEUE, message);
     }
 }
