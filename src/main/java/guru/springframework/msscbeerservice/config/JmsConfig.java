@@ -8,6 +8,8 @@ import org.springframework.jms.support.converter.MessageType;
 
 @Configuration
 public class JmsConfig {
+    public final static String BREWING_REQUEST_QUEUE = "Brewing-request";
+
     @Bean
     public MessageConverter jacksonMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
