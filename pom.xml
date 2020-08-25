@@ -15,6 +15,9 @@
     <name>mssc-beer-service</name>
 
     <description>MSSC Beer Service</description>
+    <properties>
+        <docker.image.prefix>cisabane7</docker.image.prefix>
+    </properties>
 
     <dependencies>
         <dependency>
