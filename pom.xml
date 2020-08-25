@@ -50,6 +50,6 @@
     </build>
 
     <scm>
-        <developerConnection>scm:git:git@github.com:Cisabane7/mssc-beer-service.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/Cisabane7/mssc-beer-service.git</developerConnection>
     </scm>
 </project>
