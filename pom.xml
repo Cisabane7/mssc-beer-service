@@ -9,7 +9,7 @@
 
     <groupId>guru.springframework</groupId>
     <artifactId>mssc-beer-service</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
 
     <name>mssc-beer-service</name>
 
@@ -51,5 +51,6 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/Cisabane7/mssc-beer-service.git</developerConnection>
+    <tag>mssc-beer-service-0.0.2</tag>
   </scm>
 </project>
