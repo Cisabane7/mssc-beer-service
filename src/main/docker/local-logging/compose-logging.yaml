@@ -135,7 +135,7 @@ services:
       SPRING_PROFILES_ACTIVE: local-discovery
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
       SPRING_CLOUD_DISCOVERY_ENABLED: "true"
-    restart: on-
+    restart: on-failure
     labels:
       collect_logs_with_filebeat: "true"
       decode_log_event_to_json_object: "true"
