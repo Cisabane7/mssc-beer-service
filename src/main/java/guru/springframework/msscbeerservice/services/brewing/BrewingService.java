@@ -12,6 +12,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +25,10 @@ public class BrewingService {
     private final BeerMapper beerMapper;
 
     @Scheduled(fixedRate = 5000)
+    @Transactional
     public void checkForLowInventory() {
+        log.debug("Checking Beer Inventory");
+
         List<Beer> beers = repository.findAll();
         beers.forEach(beer -> {
             Integer inventoryQOHG = beerInventoryService.getOnHandInventory(beer.getId());

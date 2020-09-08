@@ -1,5 +1,26 @@
 version: '3.8'
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    ports:
+      - 9200:9200
+    environment:
+      discovery.type: single-node
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    ports:
+      - 5601:5601
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.7.0
+    volumes:
+      - ./filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro # Configuration file
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro           # Docker logs
+      - /var/run/docker.sock:/var/run/docker.sock:ro                       # Additionnal information about
+    user: root
+    restart: on-failure
   jms:
     image: vromero/activemq-artemis
     ports:
@@ -36,10 +57,12 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin
       SPRING_ARTEMIS_HOST: jms
       SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/beerinventoryservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      #SPRING_CLOUD_CONFIG_URI: http://MyUserName:MySecretPassword@config:8888
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
       SPRING_CLOUD_DISCOVERY_ENABLED: "true"
     restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   inventory-failover:
     image: cisabane7/mssc-inventory-failover #sfgbeerworks/sfg-brewery-inventory-failover
     ports:
@@ -49,7 +72,6 @@ services:
       - config
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://learner:Performer1@eureka:8761/eureka #http://netflix:eureka@eureka:8761/eureka
-      #SPRING_CLOUD_CONFIG_URI: http://MyUserName:MySecretPassword@config:8888
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
   beer-service:
     image: cisabane7/mssc-beer-service #sfgbeerworks/sfg-brewery-beer-service
@@ -66,13 +88,13 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin
       SPRING_ARTEMIS_HOST: jms
       SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/beerservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      #SPRING_CLOUD_CONFIG_URI: http://MyUserName:MySecretPassword@config:8888
       SFG_BREWERY_BEERINVENTORYSERVICEHOST: http://inventory-service:8082
-      #SFG_BREWERY_INVENTORYUSER: good
-      #SFG_BREWERY_INVENTORYPWD: jus
       SPRING_CLOUD_DISCOVERY_ENABLED: "true"
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
     restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   order-service:
     image: cisabane7/mssc-beer-order-service #sfgbeerworks/sfg-brewery-order-service
     ports:
@@ -93,6 +115,9 @@ services:
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
       SPRING_CLOUD_DISCOVERY_ENABLED: "true"
     restart: on-failure
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   gateway:
     image: cisabane7/mssc-brewery-gateway #sfgbeerworks/sfg-brewery-gateway
     ports:
@@ -110,4 +135,7 @@ services:
       SPRING_PROFILES_ACTIVE: local-discovery
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
       SPRING_CLOUD_DISCOVERY_ENABLED: "true"
-    restart: on-failure
+    restart: on-
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
