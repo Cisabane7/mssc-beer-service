@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Profile("local-discovery")
+@Profile({"local-discovery", "digitalocean"})
 public class BeerInventoryServiceFeign implements BeerInventoryService {
     private final InventoryServiceFeignClient inventoryServiceFeignClient;
 

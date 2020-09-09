@@ -20,7 +20,7 @@ import java.util.UUID;
 @Component
 @ConfigurationProperties(prefix = "sfg.brewery", ignoreUnknownFields = true)
 @Slf4j
-@Profile("!local-discovery")
+@Profile("!local-discovery & !digitalocean")
 public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryService {
 
     public static final String INVENTORY_PATH = "/api/v1/beer/{beerId}/inventory";
