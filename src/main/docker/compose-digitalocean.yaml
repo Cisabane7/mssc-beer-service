@@ -54,7 +54,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: digitalocean
       SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://learner:Performer1@188.166.164.209:8761/eureka/"},"region":"default","register-with-eureka":true},"instance":{"preferIpAddress":false,"hostName":"order-service"}},"spring":{"cloud":{"config":{"discovery":{"enabled":true,"serviceId":"mssc-brewery-config"},"failFast":true,"username":"MyUserName","password":"MySecretPassword"}}},"application":{"name":"order-service"}}'
-      SFG_BREWERY_BEER-SERVICE-HOST: http://beer-service:8080
+      #SFG_BREWERY_BEER-SERVICE-HOST: http://beer-service:8080
     labels:
       collect_logs_with_filebeat: "true"
       decode_log_event_to_json_object: "true"
